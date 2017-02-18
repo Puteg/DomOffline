@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using DomOffline.DAL;
 using DomOffline.Models;
+using DomOffline.ModelViews;
 
 namespace DomOffline.Controllers
 {
@@ -29,11 +30,48 @@ namespace DomOffline.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Game game = db.Games.Find(id);
+
             if (game == null)
             {
                 return HttpNotFound();
             }
-            return View(game);
+
+            var payments = db.Payments.Where(c => c.GameId == id && !(new [] {PaymentUse.CashIn, PaymentUse.CashOut }.Contains(c.PaymentUse))).ToList();
+
+            var vm = new GameVm()
+            {
+                Model = game,
+
+                PlayerList = game.Players.Select(c =>
+                    new GamePlayerListItem()
+                    {
+                        Name = c.Person.Name,
+                        Input = string.Join(" + ", c.Payments.Where(s => s.PaymentUse == PaymentUse.CashIn).Select(s => s.Amount).ToList()),
+                        Out = string.Join(" + ", c.Payments.Where(s => s.PaymentUse == PaymentUse.CashOut).Select(s => s.Amount).ToList())
+                    }).ToList(),
+
+                InputTotalAmount = game.Players.SelectMany(c => c.Payments.Where(s => s.PaymentUse == PaymentUse.CashIn).Select(s => s.Amount)).Sum().ToString(),
+                OutputTotalAmount = game.Players.SelectMany(c => c.Payments.Where(s => s.PaymentUse == PaymentUse.CashOut).Select(s => s.Amount)).Sum().ToString(),
+
+                RakeList = game.Rakes.Select(c =>
+                    new GameRakeListItem()
+                    {
+                        DateTime = c.DateTime.ToShortTimeString(),
+                        Amount = c.Amount.ToString(),
+                        Diler = c.Person.Name
+                    }).ToList(),
+                RakeTotalAmount = game.Rakes.Sum(c => c.Amount).ToString(),
+
+                SpendingList = payments.Select(c =>
+                    new GameSpendingListItem()
+                    {
+                        Amount = c.Amount.ToString(),
+                        Use = c.AdditionInfo
+                    }).ToList(),
+                SpendingTotalAmount = payments.Sum(c => c.Amount).ToString()
+            };
+
+            return View(vm);
         }
 
         // GET: Games/Create
@@ -47,7 +85,7 @@ namespace DomOffline.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Start,End")] Game game)
+        public ActionResult Create([Bind(Include = "Id,Name")] Game game)
         {
             if (ModelState.IsValid)
             {

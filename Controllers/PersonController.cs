@@ -11,120 +11,107 @@ using DomOffline.Models;
 
 namespace DomOffline.Controllers
 {
-    public class PaymentsController : Controller
+    public class PersonController : Controller
     {
         private DomContext db = new DomContext();
 
-        // GET: Payments
+        // GET: Persons
         public ActionResult Index()
         {
-            var payments = db.Payments.Include(p => p.Game).Include(p => p.Player).Include(p => p.Type);
-            return View(payments.ToList());
+            return View(db.Persons.ToList());
         }
 
-        // GET: Payments/Details/5
+        // GET: Persons/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Payment payment = db.Payments.Find(id);
-            if (payment == null)
+            Person person = db.Persons.Find(id);
+            if (person == null)
             {
                 return HttpNotFound();
             }
-            return View(payment);
+            return View(person);
         }
 
-        // GET: Payments/Create
+        // GET: Persons/Create
         public ActionResult Create()
         {
-            ViewBag.GameId = new SelectList(db.Games, "Id", "Name");
-            ViewBag.PlayerId = new SelectList(db.Players, "Id", "Id");
-            ViewBag.TypeId = new SelectList(db.PaymentTypes, "Id", "Name");
             return View();
         }
 
-        // POST: Payments/Create
+        // POST: Persons/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,TypeId,PlayerId,GameId,PaymentUse,Amount,AdditionInfo")] Payment payment)
+        public ActionResult Create([Bind(Include = "Id,Name,AdditionInfo")] Person person)
         {
             if (ModelState.IsValid)
             {
-                db.Payments.Add(payment);
+                db.Persons.Add(person);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.GameId = new SelectList(db.Games, "Id", "Name", payment.GameId);
-            ViewBag.PlayerId = new SelectList(db.Players, "Id", "Id", payment.PlayerId);
-            ViewBag.TypeId = new SelectList(db.PaymentTypes, "Id", "Name", payment.TypeId);
-            return View(payment);
+            return View(person);
         }
 
-        // GET: Payments/Edit/5
+        // GET: Persons/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Payment payment = db.Payments.Find(id);
-            if (payment == null)
+            Person person = db.Persons.Find(id);
+            if (person == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.GameId = new SelectList(db.Games, "Id", "Name", payment.GameId);
-            ViewBag.PlayerId = new SelectList(db.Players, "Id", "Id", payment.PlayerId);
-            ViewBag.TypeId = new SelectList(db.PaymentTypes, "Id", "Name", payment.TypeId);
-            return View(payment);
+            return View(person);
         }
 
-        // POST: Payments/Edit/5
+        // POST: Persons/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,TypeId,PlayerId,GameId,PaymentUse,DateTime,Amount,AdditionInfo")] Payment payment)
+        public ActionResult Edit([Bind(Include = "Id,Name,AdditionInfo")] Person person)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(payment).State = EntityState.Modified;
+                db.Entry(person).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.GameId = new SelectList(db.Games, "Id", "Name", payment.GameId);
-            ViewBag.PlayerId = new SelectList(db.Players, "Id", "Id", payment.PlayerId);
-            ViewBag.TypeId = new SelectList(db.PaymentTypes, "Id", "Name", payment.TypeId);
-            return View(payment);
+            return View(person);
         }
 
-        // GET: Payments/Delete/5
+        // GET: Persons/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Payment payment = db.Payments.Find(id);
-            if (payment == null)
+            Person person = db.Persons.Find(id);
+            if (person == null)
             {
                 return HttpNotFound();
             }
-            return View(payment);
+            return View(person);
         }
 
-        // POST: Payments/Delete/5
+        // POST: Persons/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Payment payment = db.Payments.Find(id);
-            db.Payments.Remove(payment);
+            Person person = db.Persons.Find(id);
+            db.Persons.Remove(person);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

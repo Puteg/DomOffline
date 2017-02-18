@@ -1,42 +1,152 @@
-﻿@model DomOffline.Models.Game
+﻿@model DomOffline.ModelViews.GameVm
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Подробная инофрмация";
 }
+<div class="page-header">
+    <h1>
+        @Html.DisplayFor(model => model.Model.Name)
+        <small>
+            @if (!Model.Model.End.HasValue)
+            {
+                @Html.Raw(Model.Model.Start.ToShortDateString())
+            }
+            else
+            {
+                @Html.Raw(Model.Model.Start)
+                @Html.Raw(" - ")
+                @Html.Raw(Model.Model.End)
+            }
+        </small>
+    </h1>
+</div>
 
-<h2>Details</h2>
 
 <div>
-    <h4>Game</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">Рейк</div>
+                <div class="panel-body">
+                    <table class="table table-condensed">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RakeList.FirstOrDefault().DateTime)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RakeList.FirstOrDefault().Diler)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RakeList.FirstOrDefault().Amount)
+                            </th>
+                        </tr>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+                        @foreach (var item in Model.RakeList)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DateTime)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Diler)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Amount)
+                                </td>
+                            </tr>
+                        }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Start)
-        </dt>
+                        <tr>
+                            <td><b> Итого: </b> </td>
+                            <td></td>
+                            <td> <b> @Model.RakeTotalAmount</b> </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Start)
-        </dd>
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">Расходы</div>
+                <div class="panel-body">
+                    <table class="table">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SpendingList.FirstOrDefault().Amount)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SpendingList.FirstOrDefault().Use)
+                            </th>
+                        </tr>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.End)
-        </dt>
+                        @foreach (var item in Model.SpendingList)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Amount)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Use)
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                    <tr>
+                        <td><b> Итого: </b> </td>
+                        <td></td>
+                        <td> <b> @Model.SpendingTotalAmount</b> </td>
+                    </tr>
+                </div>
+            </div>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.End)
-        </dd>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Игроки</div>
+                    <div class="panel-body">
+                        <table class="table">
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PlayerList.FirstOrDefault().Name)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PlayerList.FirstOrDefault().Input)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PlayerList.FirstOrDefault().Out)
+                                </th>
+                            </tr>
 
-    </dl>
+                            @foreach (var item in Model.PlayerList)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Input)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Out)
+                                    </td>
+                                </tr>
+                            }
+
+                            <tr>
+                                <td><b> Итого: </b> </td>
+                                <td> <b> @Model.InputTotalAmount</b> </td>
+                                <td> <b> @Model.OutputTotalAmount</b> </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 </div>
+
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

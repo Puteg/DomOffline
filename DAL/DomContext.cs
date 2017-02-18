@@ -16,10 +16,11 @@ namespace DomOffline.DAL
         }
 
         public DbSet<Game> Games { get; set; }
+        public DbSet<Person> Persons { get; set; }
         public DbSet<Player> Players { get; set; }
-        public DbSet<PlayerInGame> PlayerInGames { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<PaymentType> PaymentTypes { get; set; }
+        public DbSet<Rake> Rakes { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

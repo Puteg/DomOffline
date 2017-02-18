@@ -11,11 +11,19 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.PlayerInGame.Id)
+            @Html.DisplayNameFor(model => model.Game.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.PlayerInGame.Id)
+            @Html.DisplayFor(model => model.Game.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Player.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Player.Id)
         </dd>
 
         <dt>
@@ -27,11 +35,19 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.CreateDateTime)
+            @Html.DisplayNameFor(model => model.PaymentUse)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.CreateDateTime)
+            @Html.DisplayFor(model => model.PaymentUse)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateTime)
         </dd>
 
         <dt>

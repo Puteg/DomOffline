@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DomOffline.Models.Payment>
+﻿@model IEnumerable<DomOffline.Models.Rake>
 
 @{
     ViewBag.Title = "Index";
@@ -15,22 +15,10 @@
             @Html.DisplayNameFor(model => model.Game.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Player.Id)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Type.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PaymentUse)
+            @Html.DisplayNameFor(model => model.PersonId)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.DateTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Amount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AdditionInfo)
         </th>
         <th></th>
     </tr>
@@ -41,22 +29,10 @@
             @Html.DisplayFor(modelItem => item.Game.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Player.Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Type.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PaymentUse)
+            @Html.DisplayFor(modelItem => item.PersonId)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.DateTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Amount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AdditionInfo)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

@@ -11,120 +11,116 @@ using DomOffline.Models;
 
 namespace DomOffline.Controllers
 {
-    public class PaymentsController : Controller
+    public class RakesController : Controller
     {
         private DomContext db = new DomContext();
 
-        // GET: Payments
+        // GET: Rakes
         public ActionResult Index()
         {
-            var payments = db.Payments.Include(p => p.Game).Include(p => p.Player).Include(p => p.Type);
-            return View(payments.ToList());
+            var rakes = db.Rakes.Include(r => r.Game).Include(r => r.Person);
+            return View(rakes.ToList());
         }
 
-        // GET: Payments/Details/5
+        // GET: Rakes/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Payment payment = db.Payments.Find(id);
-            if (payment == null)
+            Rake rake = db.Rakes.Find(id);
+            if (rake == null)
             {
                 return HttpNotFound();
             }
-            return View(payment);
+            return View(rake);
         }
 
-        // GET: Payments/Create
+        // GET: Rakes/Create
         public ActionResult Create()
         {
             ViewBag.GameId = new SelectList(db.Games, "Id", "Name");
-            ViewBag.PlayerId = new SelectList(db.Players, "Id", "Id");
-            ViewBag.TypeId = new SelectList(db.PaymentTypes, "Id", "Name");
+            ViewBag.PersonId = new SelectList(db.Persons, "Id", "Name");
             return View();
         }
 
-        // POST: Payments/Create
+        // POST: Rakes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,TypeId,PlayerId,GameId,PaymentUse,Amount,AdditionInfo")] Payment payment)
+        public ActionResult Create([Bind(Include = "Id,GameId,PersonId,Amount")] Rake rake)
         {
             if (ModelState.IsValid)
             {
-                db.Payments.Add(payment);
+                db.Rakes.Add(rake);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.GameId = new SelectList(db.Games, "Id", "Name", payment.GameId);
-            ViewBag.PlayerId = new SelectList(db.Players, "Id", "Id", payment.PlayerId);
-            ViewBag.TypeId = new SelectList(db.PaymentTypes, "Id", "Name", payment.TypeId);
-            return View(payment);
+            ViewBag.GameId = new SelectList(db.Games, "Id", "Name", rake.GameId);
+            ViewBag.PersonId = new SelectList(db.Persons, "Id", "Name", rake.PersonId);
+            return View(rake);
         }
 
-        // GET: Payments/Edit/5
+        // GET: Rakes/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Payment payment = db.Payments.Find(id);
-            if (payment == null)
+            Rake rake = db.Rakes.Find(id);
+            if (rake == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.GameId = new SelectList(db.Games, "Id", "Name", payment.GameId);
-            ViewBag.PlayerId = new SelectList(db.Players, "Id", "Id", payment.PlayerId);
-            ViewBag.TypeId = new SelectList(db.PaymentTypes, "Id", "Name", payment.TypeId);
-            return View(payment);
+            ViewBag.GameId = new SelectList(db.Games, "Id", "Name", rake.GameId);
+            ViewBag.PersonId = new SelectList(db.Persons, "Id", "Name", rake.PersonId);
+            return View(rake);
         }
 
-        // POST: Payments/Edit/5
+        // POST: Rakes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,TypeId,PlayerId,GameId,PaymentUse,DateTime,Amount,AdditionInfo")] Payment payment)
+        public ActionResult Edit([Bind(Include = "Id,GameId,PersonId,Amount,DateTime")] Rake rake)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(payment).State = EntityState.Modified;
+                db.Entry(rake).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.GameId = new SelectList(db.Games, "Id", "Name", payment.GameId);
-            ViewBag.PlayerId = new SelectList(db.Players, "Id", "Id", payment.PlayerId);
-            ViewBag.TypeId = new SelectList(db.PaymentTypes, "Id", "Name", payment.TypeId);
-            return View(payment);
+            ViewBag.GameId = new SelectList(db.Games, "Id", "Name", rake.GameId);
+            ViewBag.PersonId = new SelectList(db.Persons, "Id", "Name", rake.PersonId);
+            return View(rake);
         }
 
-        // GET: Payments/Delete/5
+        // GET: Rakes/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Payment payment = db.Payments.Find(id);
-            if (payment == null)
+            Rake rake = db.Rakes.Find(id);
+            if (rake == null)
             {
                 return HttpNotFound();
             }
-            return View(payment);
+            return View(rake);
         }
 
-        // POST: Payments/Delete/5
+        // POST: Rakes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Payment payment = db.Payments.Find(id);
-            db.Payments.Remove(payment);
+            Rake rake = db.Rakes.Find(id);
+            db.Rakes.Remove(rake);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
