@@ -46,6 +46,32 @@ namespace DomOffline.Controllers
             return View();
         }
 
+
+        public PartialViewResult CreateParital(int gameId)
+        {
+            ViewBag.GameId = new SelectList(db.Games, "Id", "Name");
+            ViewBag.PlayerId = new SelectList(db.Players.Where(c => c.GameId == gameId).Select(c => new SelectListItem { Text = c.Person.Name, Value = c.Id.ToString() }), "Value", "Text");
+            ViewBag.TypeId = new SelectList(db.PaymentTypes, "Id", "Name");
+            return PartialView(new Payment() {GameId = gameId});
+        }
+
+
+        public PartialViewResult RebuyParital(int gameId)
+        {
+            ViewBag.GameId = new SelectList(db.Games, "Id", "Name");
+            ViewBag.PlayerId = new SelectList(db.Players.Where(c => c.GameId == gameId).Select(c => new SelectListItem { Text = c.Person.Name, Value = c.Id.ToString() }), "Value", "Text");
+            ViewBag.TypeId = new SelectList(db.PaymentTypes, "Id", "Name");
+            return PartialView("PaymentUseParital", new Payment() { GameId = gameId, PaymentUse = PaymentUse.CashIn});
+        }
+
+        public PartialViewResult SeatOutParital(int gameId)
+        {
+            ViewBag.GameId = new SelectList(db.Games, "Id", "Name");
+            ViewBag.PlayerId = new SelectList(db.Players.Where(c => c.GameId == gameId).Select(c => new SelectListItem { Text = c.Person.Name, Value = c.Id.ToString() }), "Value", "Text");
+            ViewBag.TypeId = new SelectList(db.PaymentTypes, "Id", "Name");
+            return PartialView("PaymentUseParital", new Payment() { GameId = gameId, PaymentUse = PaymentUse.CashOut});
+        }
+
         // POST: Payments/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -57,6 +83,10 @@ namespace DomOffline.Controllers
             {
                 db.Payments.Add(payment);
                 db.SaveChanges();
+
+                if (Request.UrlReferrer != null && Request.UrlReferrer != Request.Url)
+                    return Redirect(Request.UrlReferrer.ToString());
+
                 return RedirectToAction("Index");
             }
 

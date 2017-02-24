@@ -45,6 +45,13 @@ namespace DomOffline.Controllers
             return View();
         }
 
+        public PartialViewResult CreateParital(int gameId)
+        {
+            ViewBag.GameId = new SelectList(db.Games, "Id", "Name");
+            ViewBag.PersonId = new SelectList(db.Persons, "Id", "Name");
+            return PartialView(new Rake() {GameId = gameId});
+        }
+
         // POST: Rakes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.

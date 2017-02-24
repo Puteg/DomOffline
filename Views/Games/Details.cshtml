@@ -62,6 +62,10 @@
                             <td> <b> @Model.RakeTotalAmount</b> </td>
                         </tr>
                     </table>
+
+                    <button style="width: 100%" id="add-rake" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                        Добавить рейк
+                    </button>
                 </div>
             </div>
         </div>
@@ -91,62 +95,152 @@
                                 </td>
                             </tr>
                         }
+                        <tr>
+                            <td><b> Итого: </b> </td>
+                            <td></td>
+                            <td> <b> @Model.SpendingTotalAmount</b> </td>
+                        </tr>
                     </table>
-                    <tr>
-                        <td><b> Итого: </b> </td>
-                        <td></td>
-                        <td> <b> @Model.SpendingTotalAmount</b> </td>
-                    </tr>
+
+                    <button style="width: 100%" id="add-spending" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                        Добавить расходы
+                    </button>
                 </div>
             </div>
         </div>
 
-            <div class="col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Игроки</div>
-                    <div class="panel-body">
-                        <table class="table">
-                            <tr>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.PlayerList.FirstOrDefault().Name)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.PlayerList.FirstOrDefault().Input)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.PlayerList.FirstOrDefault().Out)
-                                </th>
-                            </tr>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Игроки</div>
+                <div class="panel-body">
+                    <table class="table">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PlayerList.FirstOrDefault().Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PlayerList.FirstOrDefault().Input)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PlayerList.FirstOrDefault().Out)
+                            </th>
+                        </tr>
 
-                            @foreach (var item in Model.PlayerList)
-                            {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Name)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Input)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Out)
-                                    </td>
-                                </tr>
-                            }
-
+                        @foreach (var item in Model.PlayerList)
+                        {
                             <tr>
-                                <td><b> Итого: </b> </td>
-                                <td> <b> @Model.InputTotalAmount</b> </td>
-                                <td> <b> @Model.OutputTotalAmount</b> </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Input)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Out)
+                                </td>
                             </tr>
-                        </table>
+                        }
+
+                        <tr>
+                            <td><b> Итого: </b> </td>
+                            <td> <b> @Model.InputTotalAmount</b> </td>
+                            <td> <b> @Model.OutputTotalAmount</b> </td>
+                        </tr>
+                    </table>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button style="width:100%" id="seat" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                                Посадить
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button style="width:100%" id="rebuy" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                                Докупить
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button style="width:100%" id="seat-out" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                                Расчитать
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-
         </div>
+
+    </div>
 </div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Modal title</h4>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Отменить</button>
+                <button id="submit" type="button" class="btn btn-primary">Сохранить</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+@section scripts
+{
+    <script>
+        $(function() {
+            var submit = function(data) {
+                $("#myModal .modal-body").html(data);
+                $("#myModal .modal-footer #submit").on("click", function() {
+                    $("#myModal .modal-body form").submit();
+                });
+            };
+
+            $("#add-rake").on("click", function() {
+                $("#myModal .modal-title").html("Добавить рейк");
+
+                $.ajax({
+                    url: "@Url.Action("CreateParital", "Rakes", new {gameId = @Model.Model.Id})",
+                    method: "GET"
+                }).done(function(data) { submit(data) });
+            });
+
+            $("#add-spending").on("click", function() {
+                $("#myModal .modal-title").html("Добавить расходы");
+
+                $.ajax({
+                    url: "@Url.Action("CreateParital", "Payments", new {gameId = @Model.Model.Id})",
+                    method: "GET"
+                }).done(function(data) { submit(data) });
+            });
+
+            $("#rebuy").on("click", function() {
+                $("#myModal .modal-title").html("Добавить");
+
+                $.ajax({
+                    url: "@Url.Action("RebuyParital", "Payments", new {gameId = @Model.Model.Id})",
+                    method: "GET"
+                }).done(function(data) { submit(data) });
+            });
+
+            $("#seat-out").on("click", function() {
+                $("#myModal .modal-title").html("Расчитать");
+
+                $.ajax({
+                    url: "@Url.Action("SeatOutParital", "Payments", new {gameId = @Model.Model.Id})",
+                    method: "GET"
+                }).done(function(data) { submit(data) });
+            });
+
+        });
+    </script>
+}

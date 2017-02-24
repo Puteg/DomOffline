@@ -271,16 +271,14 @@
     <Content Include="Views\PaymentTypes\Details.cshtml" />
     <Content Include="Views\PaymentTypes\Edit.cshtml" />
     <Content Include="Views\PaymentTypes\Index.cshtml" />
-    <Content Include="Views\Rake\Create.cshtml" />
-    <Content Include="Views\Rake\Delete.cshtml" />
-    <Content Include="Views\Rake\Details.cshtml" />
-    <Content Include="Views\Rake\Edit.cshtml" />
-    <Content Include="Views\Rake\Index.cshtml" />
     <Content Include="Views\Rakes\Create.cshtml" />
     <Content Include="Views\Rakes\Delete.cshtml" />
     <Content Include="Views\Rakes\Details.cshtml" />
     <Content Include="Views\Rakes\Edit.cshtml" />
     <Content Include="Views\Rakes\Index.cshtml" />
+    <None Include="Views\Payments\CreateParital.cshtml" />
+    <None Include="Views\Payments\PaymentUseParital.cshtml" />
+    <None Include="Views\Rakes\CreateParital.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
