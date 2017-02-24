@@ -41,7 +41,7 @@ namespace DomOffline.Controllers
         public ActionResult Create()
         {
             ViewBag.GameId = new SelectList(db.Games, "Id", "Name");
-            ViewBag.PlayerId = new SelectList(db.Players, "Id", "Id");
+            ViewBag.PlayerId = new SelectList(db.Players.Select(c => new SelectListItem { Text = c.Person.Name, Value = c.Id.ToString() }), "Value", "Text");
             ViewBag.TypeId = new SelectList(db.PaymentTypes, "Id", "Name");
             return View();
         }
@@ -61,7 +61,7 @@ namespace DomOffline.Controllers
             }
 
             ViewBag.GameId = new SelectList(db.Games, "Id", "Name", payment.GameId);
-            ViewBag.PlayerId = new SelectList(db.Players, "Id", "Id", payment.PlayerId);
+            ViewBag.PlayerId = new SelectList(db.Players.Select(c => new SelectListItem{ Text = c.Person.Name, Value = c.Id.ToString()}));
             ViewBag.TypeId = new SelectList(db.PaymentTypes, "Id", "Name", payment.TypeId);
             return View(payment);
         }

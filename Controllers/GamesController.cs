@@ -46,29 +46,29 @@ namespace DomOffline.Controllers
                     new GamePlayerListItem()
                     {
                         Name = c.Person.Name,
-                        Input = string.Join(" + ", c.Payments.Where(s => s.PaymentUse == PaymentUse.CashIn).Select(s => s.Amount).ToList()),
-                        Out = string.Join(" + ", c.Payments.Where(s => s.PaymentUse == PaymentUse.CashOut).Select(s => s.Amount).ToList())
+                        Input = string.Join(" + ", c.Payments.Where(s => s.PaymentUse == PaymentUse.CashIn).Select(s => s.Amount.ToString("0.##")).ToList()),
+                        Out = string.Join(" + ", c.Payments.Where(s => s.PaymentUse == PaymentUse.CashOut).Select(s => s.Amount.ToString("0.##")).ToList())
                     }).ToList(),
 
-                InputTotalAmount = game.Players.SelectMany(c => c.Payments.Where(s => s.PaymentUse == PaymentUse.CashIn).Select(s => s.Amount)).Sum().ToString(),
-                OutputTotalAmount = game.Players.SelectMany(c => c.Payments.Where(s => s.PaymentUse == PaymentUse.CashOut).Select(s => s.Amount)).Sum().ToString(),
+                InputTotalAmount = game.Players.SelectMany(c => c.Payments.Where(s => s.PaymentUse == PaymentUse.CashIn).Select(s => s.Amount)).Sum().ToString("0.##"),
+                OutputTotalAmount = game.Players.SelectMany(c => c.Payments.Where(s => s.PaymentUse == PaymentUse.CashOut).Select(s => s.Amount)).Sum().ToString("0.##"),
 
                 RakeList = game.Rakes.Select(c =>
                     new GameRakeListItem()
                     {
                         DateTime = c.DateTime.ToShortTimeString(),
-                        Amount = c.Amount.ToString(),
+                        Amount = c.Amount.ToString("0.##"),
                         Diler = c.Person.Name
                     }).ToList(),
-                RakeTotalAmount = game.Rakes.Sum(c => c.Amount).ToString(),
+                RakeTotalAmount = game.Rakes.Sum(c => c.Amount).ToString("0.##"),
 
                 SpendingList = payments.Select(c =>
                     new GameSpendingListItem()
                     {
-                        Amount = c.Amount.ToString(),
+                        Amount = c.Amount.ToString("0.##"),
                         Use = c.AdditionInfo
                     }).ToList(),
-                SpendingTotalAmount = payments.Sum(c => c.Amount).ToString()
+                SpendingTotalAmount = payments.Sum(c => c.Amount).ToString("0.##")
             };
 
             return View(vm);
